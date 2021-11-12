@@ -43,17 +43,18 @@ class _MyHomePageState extends State<MyHomePage> {
           maxScale: 1.5,
           minScale: 0.1,
           boundaryMargin: const EdgeInsets.all(256.0),
-          child: Stack(
-            children: [
-              SizedBox(
-                  width: 1920,
-                  height: 720,
-                  child: Container(
-                    color: Colors.amber,
-                  )),
-              DraggableWidget(),
-            ],
-          ),
+          child: SizedBox(
+              width: 1920,
+              height: 720,
+              child: Container(
+                color: Colors.black,
+                child: Stack(
+                  children: [
+                    DraggableWidget(),
+                    DraggableWidget(),
+                  ],
+                ),
+              )),
         ));
   }
 }

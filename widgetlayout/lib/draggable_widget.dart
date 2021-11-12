@@ -41,6 +41,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
           },
           onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
             // print("${details.offsetFromOrigin}");
+            if (_isEditable == false) return;
             setState(() {
               _offset = _longPressStartPosition + details.offsetFromOrigin;
             });
@@ -48,9 +49,24 @@ class _DraggableWidgetState extends State<DraggableWidget> {
           child: Opacity(
             opacity: _isEditable ? 0.5 : 1.0,
             child: Container(
-              width: 50,
+              width: 150,
               height: 50,
               color: Colors.blue,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text("widget1"),
+                  Visibility(
+                      visible: _isEditable,
+                      child:
+                          PopupMenuButton(itemBuilder: (BuildContext context) {
+                        return [
+                          const PopupMenuItem(child: Text("delete")),
+                          const PopupMenuItem(child: Text("property")),
+                        ];
+                      })),
+                ],
+              ),
             ),
           ),
         ));
