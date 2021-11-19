@@ -43,3 +43,32 @@ class DraggableModel extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class DraggableJson {
+  String widgetName;
+  Offset position;
+  double width;
+  double height;
+  bool isEditable;
+  bool isVisible;
+
+  DraggableJson(this.widgetName, this.position, this.width, this.height,
+      this.isEditable, this.isVisible);
+
+  DraggableJson.fromJson(Map<String, dynamic> json)
+      : widgetName = json['widgetName'] as String,
+        position = json['position'] as Offset,
+        width = json['width'] as double,
+        height = json['height'] as double,
+        isEditable = json['isEditable'] as bool,
+        isVisible = json['isVisible'] as bool;
+
+  Map<String, dynamic> toJson() => {
+        'widgetName': widgetName,
+        'position': position,
+        'width': width,
+        'height': height,
+        'isEditable': isEditable,
+        'isVisible': isVisible,
+      };
+}

@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
-import 'draggable_model.dart';
+import 'package:widgetlayout/models/draggable_model.dart';
+import 'dart:convert';
+import 'draggables_model.dart';
 
 class DraggableManager extends ChangeNotifier {
-  final _draggables = <DraggableModel>[];
-  List<DraggableModel> get draggables => _draggables;
+  final DraggablesModel _draggables = DraggablesModel();
+  get draggables => _draggables;
 
-  void creatList() {
-    for (int i = 1; i <= 10; i++) {
-      var widget = DraggableModel();
-      widget.widgetName = 'widjet$i}';
-      widget.position = Offset(100.toDouble() * i, 0);
+  void createDraggablesList() {
+    _draggables.creatList();
+  }
 
-      _draggables.add(widget);
+  void changeEditMode(bool isEdit) {
+    for (var draggable in _draggables.draggables) {
+      draggable.isEditable = isEdit;
     }
   }
 
-  void saveList() {}
-
-  void changeEditMode(bool isEdit) {
-    for (var draggable in _draggables) {
-      draggable.isEditable = isEdit;
+  String createDraggablesJsonString() {
+    DraggablesJson draggablesJson = DraggablesJson([]);
+    for (var item in _draggables.draggables) {
+      draggablesJson.draggables.add(DraggableJson(
+          item.widgetName,
+          item.position,
+          item.width,
+          item.height,
+          item.isEditable,
+          item.isVisible));
     }
+
+    return json.encode(draggablesJson);
   }
 }

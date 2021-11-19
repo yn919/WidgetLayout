@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'draggable_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:widgetlayout/models/draggable_manager.dart';
+import 'package:widgetlayout/views/layout_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,50 +13,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final draggableManager = DraggableManager();
+    draggableManager.createDraggablesList();
+
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Widget Layout',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<DraggableManager>(
+            create: (context) => draggableManager,
+          )
+        ],
+        child: const LayoutPage(),
+      ),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final _transformationController = TransformationController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: InteractiveViewer(
-          constrained: false,
-          maxScale: 1.5,
-          minScale: 0.1,
-          boundaryMargin: const EdgeInsets.all(256.0),
-          child: SizedBox(
-              width: 1920,
-              height: 720,
-              child: Container(
-                color: Colors.black,
-                child: Stack(
-                  children: [
-                    DraggableWidget(),
-                    DraggableWidget(),
-                  ],
-                ),
-              )),
-        ));
   }
 }

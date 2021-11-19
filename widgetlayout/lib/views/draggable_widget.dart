@@ -1,65 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:widgetlayout/models/draggable_manager.dart';
+import 'package:widgetlayout/models/draggable_model.dart';
 
-class DraggableWidget extends StatefulWidget {
-  const DraggableWidget({Key? key}) : super(key: key);
-
-  @override
-  _DraggableWidgetState createState() => _DraggableWidgetState();
-}
-
-class _DraggableWidgetState extends State<DraggableWidget> {
-  bool _isEditable = false;
-  Offset _offset = const Offset(0, 0);
-  Offset _longPressStartPosition = const Offset(0, 0);
+class DraggableWidget extends StatelessWidget {
+  const DraggableWidget({Key? key, required this.model, required this.manager})
+      : super(key: key);
+  final DraggableModel model;
+  final DraggableManager manager;
 
   @override
   Widget build(BuildContext context) {
+    Offset _longPressStartPosition = const Offset(0, 0);
     return Positioned(
-        left: _offset.dx,
-        top: _offset.dy,
-        width: 150,
-        height: 50,
+        left: model.position.dx,
+        top: model.position.dy,
+        width: model.width,
+        height: model.height,
         child: GestureDetector(
             behavior: HitTestBehavior.deferToChild,
             onPanUpdate: (DragUpdateDetails details) {
-              if (_isEditable == false) return;
-
-              setState(() {
-                _offset += details.delta;
-              });
+              if (model.isEditable == false) return;
+              model.position += details.delta;
             },
             onLongPressStart: (LongPressStartDetails details) {
               // print("start=${details.globalPosition}");
-              setState(() {
-                _longPressStartPosition = _offset;
-              });
+              _longPressStartPosition = model.position;
             },
             onLongPress: () {
               HapticFeedback.vibrate();
-              setState(() {
-                _isEditable = !_isEditable;
-              });
+              manager.changeEditMode(!model.isEditable);
             },
             onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
               // print("${details.offsetFromOrigin}");
-              if (_isEditable == false) return;
-              setState(() {
-                _offset = _longPressStartPosition + details.offsetFromOrigin;
-              });
+              if (model.isEditable == false) return;
+              model.position =
+                  _longPressStartPosition + details.offsetFromOrigin;
             },
             child: Visibility(
-              visible: true,
+              visible: model.isVisible,
               child: Opacity(
-                opacity: _isEditable ? 0.5 : 1.0,
+                opacity: model.isEditable ? 0.5 : 1.0,
                 child: Container(
                   color: Colors.blue,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Text("widget1"),
+                      Text(model.widgetName),
                       Visibility(
-                          visible: _isEditable,
+                          visible: model.isEditable,
                           child: PopupMenuButton(
                               itemBuilder: (BuildContext context) {
                             return [
