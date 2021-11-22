@@ -16,18 +16,18 @@ class MyApp extends StatelessWidget {
     final draggableManager = DraggableManager();
     draggableManager.createDraggablesList();
 
-    return MaterialApp(
-      title: 'Widget Layout',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<DraggableManager>(
-            create: (context) => draggableManager,
-          )
-        ],
-        child: const LayoutPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DraggableManager>(
+          create: (context) => draggableManager,
+        )
+      ],
+      child: MaterialApp(
+        title: 'Widget Layout',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: LayoutPage(),
       ),
     );
   }

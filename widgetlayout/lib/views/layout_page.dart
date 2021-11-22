@@ -15,6 +15,18 @@ class LayoutPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Layout'),
         ),
+        drawer: Drawer(
+          child: ListView(
+            children: const [
+              ListTile(
+                title: Text('Widget List'),
+              ),
+              ListTile(
+                title: Text('Preset'),
+              ),
+            ],
+          ),
+        ),
         body: InteractiveViewer(
           constrained: false,
           maxScale: 1.5,
@@ -25,19 +37,19 @@ class LayoutPage extends StatelessWidget {
               height: 720,
               child: Container(
                 color: Colors.black,
-                child: Stack(children: createDraggables(manager)),
+                child: Stack(children: createDraggables(manager.draggables)),
               )),
         ));
   }
 
-  List<Widget> createDraggables(DraggableManager manager) {
+  List<Widget> createDraggables(DraggablesModel draggables) {
     List<Widget> widgets = [];
-    DraggablesModel draggables = manager.draggables;
     for (var item in draggables.draggables) {
-      DraggableWidget widget = DraggableWidget(
-        model: item,
-        manager: manager,
+      var widget = ChangeNotifierProvider.value(
+        value: item,
+        child: DraggableWidget(),
       );
+
       widgets.add(widget);
     }
 

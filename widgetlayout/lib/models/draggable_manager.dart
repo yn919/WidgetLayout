@@ -5,7 +5,7 @@ import 'draggables_model.dart';
 
 class DraggableManager extends ChangeNotifier {
   final DraggablesModel _draggables = DraggablesModel();
-  get draggables => _draggables;
+  DraggablesModel get draggables => _draggables;
 
   void createDraggablesList() {
     _draggables.creatList();

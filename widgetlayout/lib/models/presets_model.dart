@@ -22,7 +22,7 @@ class PresetsModel extends ChangeNotifier {
 
   Future<File> getFilePath(int presetIndex) async {
     final directory = await getApplicationDocumentsDirectory();
-    return File('${directory.path}/preset$presetIndex.txt');
+    return File('${directory.path}/preset$presetIndex.json');
   }
 
   Future<File> saveFile(String jsonString, int presetIndex) async {
