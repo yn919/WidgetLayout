@@ -55,10 +55,18 @@ class DraggableWidget extends StatelessWidget {
                                   child: PopupMenuButton(
                                       itemBuilder: (BuildContext context) {
                                     return [
-                                      const PopupMenuItem(
-                                          child: Text("delete")),
-                                      const PopupMenuItem(
-                                          child: Text("property")),
+                                      PopupMenuItem(
+                                        child: const Text("delete"),
+                                        onTap: () => {model.isVisible = false},
+                                      ),
+                                      PopupMenuItem(
+                                        child: const Text("property"),
+                                        onTap: () => {
+                                          Navigator.pushNamed(
+                                              context, 'Property',
+                                              arguments: model)
+                                        },
+                                      ),
                                     ];
                                   })),
                             ],

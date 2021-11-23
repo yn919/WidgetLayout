@@ -42,6 +42,51 @@ class DraggableModel extends ChangeNotifier {
     _isVisible = value;
     notifyListeners();
   }
+
+  String _currentSize = 'M';
+  String get currentSize => _currentSize;
+  set currentSize(String value) {
+    _currentSize = value;
+    notifyListeners();
+  }
+
+  double baseWidth = 100;
+  double baseHeight = 100;
+
+  void setDoublePropertyValue(String propertyName, double propertyValue) {
+    switch (propertyName) {
+      case 'X':
+        _position = Offset(propertyValue, _position.dy);
+        break;
+      case 'Y':
+        _position = Offset(_position.dx, propertyValue);
+        break;
+      default:
+    }
+    notifyListeners();
+  }
+
+  void setSizePropertyValue(String size) {
+    _currentSize = size;
+
+    switch (_currentSize) {
+      case 'S':
+        _width = baseWidth * 0.8;
+        _height = baseHeight * 0.8;
+        break;
+      case 'M':
+        _width = baseWidth * 1.0;
+        _height = baseHeight * 1.0;
+        break;
+      case 'L':
+        _width = baseWidth * 1.2;
+        _height = baseHeight * 1.2;
+        break;
+      default:
+    }
+
+    notifyListeners();
+  }
 }
 
 class DraggableJson {

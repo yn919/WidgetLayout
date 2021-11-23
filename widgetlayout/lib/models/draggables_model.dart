@@ -2,24 +2,53 @@ import 'package:flutter/material.dart';
 import 'draggable_model.dart';
 
 class DraggablesModel extends ChangeNotifier {
-  final _draggables = <DraggableModel>[];
-  List<DraggableModel> get draggables => _draggables;
-
-  void creatList() {
-    for (int i = 1; i <= 10; i++) {
-      var widget = DraggableModel();
-      widget.widgetName = 'widget$i';
-      widget.position = Offset(100.toDouble() * (i - 1), 0);
-      widget.width = 100;
-      widget.height = 100;
-      widget.isEditable = false;
-      widget.isVisible = true;
-
-      _draggables.add(widget);
-    }
-
-    notifyListeners();
-  }
+  List<DraggableModel> draggables = [
+    DraggableModel()
+      ..widgetName = 'widget1'
+      ..position = Offset(100.toDouble() * 0, 0)
+      ..baseWidth = 100
+      ..baseHeight = 100
+      ..width = 100
+      ..height = 100
+      ..isEditable = false
+      ..isVisible = true,
+    DraggableModel()
+      ..widgetName = 'widget2'
+      ..position = Offset(100.toDouble() * 1, 0)
+      ..baseWidth = 100
+      ..baseHeight = 100
+      ..width = 100
+      ..height = 100
+      ..isEditable = false
+      ..isVisible = true,
+    DraggableModel()
+      ..widgetName = 'widget3'
+      ..position = Offset(100.toDouble() * 2, 0)
+      ..baseWidth = 100
+      ..baseHeight = 100
+      ..width = 100
+      ..height = 100
+      ..isEditable = false
+      ..isVisible = true,
+    DraggableModel()
+      ..widgetName = 'widget4'
+      ..position = Offset(100.toDouble() * 3, 0)
+      ..baseWidth = 100
+      ..baseHeight = 100
+      ..width = 100
+      ..height = 100
+      ..isEditable = false
+      ..isVisible = true,
+    DraggableModel()
+      ..widgetName = 'widget5'
+      ..position = Offset(100.toDouble() * 4, 0)
+      ..baseWidth = 100
+      ..baseHeight = 100
+      ..width = 100
+      ..height = 100
+      ..isEditable = false
+      ..isVisible = true,
+  ];
 }
 
 class DraggablesJson {

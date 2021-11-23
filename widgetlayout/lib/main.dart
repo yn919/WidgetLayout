@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widgetlayout/models/draggable_manager.dart';
+import 'package:widgetlayout/models/drawers_model.dart';
 import 'package:widgetlayout/views/layout_page.dart';
+import 'package:widgetlayout/views/widget_list_page.dart';
+import 'package:widgetlayout/views/widget_property_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,13 +16,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final draggableManager = DraggableManager();
-    draggableManager.createDraggablesList();
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<DraggableManager>(
-          create: (context) => draggableManager,
+          create: (context) => DraggableManager(),
+        ),
+        ChangeNotifierProvider<DrawerMenusModel>(
+          create: (context) => DrawerMenusModel(),
         )
       ],
       child: MaterialApp(
@@ -27,7 +30,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: LayoutPage(),
+        initialRoute: 'Layout',
+        routes: {
+          'Layout': (context) => LayoutPage(),
+          'Widget List': (context) => WidgetListPage(),
+          'Property': (context) => WidgetPropertyPage()
+        },
       ),
     );
   }

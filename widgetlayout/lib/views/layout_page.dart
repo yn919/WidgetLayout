@@ -3,29 +3,22 @@ import 'package:provider/provider.dart';
 import 'package:widgetlayout/models/draggable_manager.dart';
 import 'package:widgetlayout/models/draggables_model.dart';
 import 'package:widgetlayout/views/draggable_widget.dart';
+import 'package:widgetlayout/views/menu_drawer.dart';
 
 class LayoutPage extends StatelessWidget {
   const LayoutPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    const String pageTitle = 'Layout';
     final manager = Provider.of<DraggableManager>(context);
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Layout'),
+          title: const Text(pageTitle),
         ),
-        drawer: Drawer(
-          child: ListView(
-            children: const [
-              ListTile(
-                title: Text('Widget List'),
-              ),
-              ListTile(
-                title: Text('Preset'),
-              ),
-            ],
-          ),
+        drawer: const MenuDrawer(
+          selectedMenu: pageTitle,
         ),
         body: InteractiveViewer(
           constrained: false,

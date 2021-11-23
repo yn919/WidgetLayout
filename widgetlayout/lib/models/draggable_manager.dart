@@ -7,10 +7,6 @@ class DraggableManager extends ChangeNotifier {
   final DraggablesModel _draggables = DraggablesModel();
   DraggablesModel get draggables => _draggables;
 
-  void createDraggablesList() {
-    _draggables.creatList();
-  }
-
   void changeEditMode(bool isEdit) {
     for (var draggable in _draggables.draggables) {
       draggable.isEditable = isEdit;
