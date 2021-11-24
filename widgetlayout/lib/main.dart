@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: 'Layout',
         routes: {
-          'Layout': (context) => LayoutPage(),
-          'Widget List': (context) => WidgetListPage(),
-          'Property': (context) => WidgetPropertyPage()
+          'Layout': (context) => const LayoutPage(),
+          'Widget List': (context) => const WidgetListPage(),
+          'Property': (context) => const WidgetPropertyPage()
         },
       ),
     );

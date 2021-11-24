@@ -43,6 +43,9 @@ class DraggableModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  final List<String> _sizeList = ['S', 'M', 'L'];
+  List<String> get sizeList => _sizeList;
+
   String _currentSize = 'M';
   String get currentSize => _currentSize;
   set currentSize(String value) {
@@ -63,6 +66,7 @@ class DraggableModel extends ChangeNotifier {
         break;
       default:
     }
+
     notifyListeners();
   }
 

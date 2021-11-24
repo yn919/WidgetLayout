@@ -24,7 +24,7 @@ class WidgetListPage extends StatelessWidget {
             itemCount: manager.draggables.draggables.length,
             itemBuilder: (context, index) => ChangeNotifierProvider.value(
                   value: manager.draggables.draggables[index],
-                  child: WidgetListTile(),
+                  child: const WidgetListTile(),
                 )));
   }
 }

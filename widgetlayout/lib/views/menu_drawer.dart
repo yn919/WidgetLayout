@@ -21,7 +21,7 @@ class MenuDrawer extends StatelessWidget {
                       child: Text(drawers.menus[index].menuName),
                       decoration: const BoxDecoration(color: Colors.blue),
                     )
-                  : MenuItem())),
+                  : const MenuItem())),
     );
   }
 }

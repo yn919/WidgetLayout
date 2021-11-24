@@ -40,7 +40,7 @@ class LayoutPage extends StatelessWidget {
     for (var item in draggables.draggables) {
       var widget = ChangeNotifierProvider.value(
         value: item,
-        child: DraggableWidget(),
+        child: const DraggableWidget(),
       );
 
       widgets.add(widget);

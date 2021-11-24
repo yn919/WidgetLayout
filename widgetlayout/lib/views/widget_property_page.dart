@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:widgetlayout/models/draggable_model.dart';
 import 'menu_drawer.dart';
 
@@ -17,15 +18,17 @@ class WidgetPropertyPage extends StatelessWidget {
       drawer: const MenuDrawer(
         selectedMenu: pageTitle,
       ),
-      body: ListView(
+      body: Container(
         padding: const EdgeInsets.all(10.0),
-        children: [
-          DoublePropertyTile(
-              propertyName: 'X', propertyValue: model.position.dx),
-          DoublePropertyTile(
-              propertyName: 'Y', propertyValue: model.position.dy),
-          const SizeDropDown(),
-        ],
+        child: Column(
+          children: [
+            DoublePropertyTile(
+                propertyName: 'X', propertyValue: model.position.dx),
+            DoublePropertyTile(
+                propertyName: 'Y', propertyValue: model.position.dy),
+            const SizeDropDown()
+          ],
+        ),
       ),
     );
   }
@@ -64,9 +67,11 @@ class DoublePropertyTile extends StatelessWidget {
           },
           autovalidateMode: AutovalidateMode.always,
           initialValue: propertyValue.toString(),
-          onChanged: (value) => {
-            if (value.isEmpty || double.tryParse(value) == null)
-              {model.setDoublePropertyValue(propertyName, propertyValue)}
+          onChanged: (value) {
+            final doubleValue = double.tryParse(value);
+            if (value.isEmpty == false && doubleValue != null) {
+              model.setDoublePropertyValue(propertyName, doubleValue);
+            }
           },
         ))
       ],
@@ -87,26 +92,51 @@ class SizeDropDown extends StatelessWidget {
         child: Text('Size'),
       ),
       Expanded(
-          child: DropdownButton(
-        items: const [
-          DropdownMenuItem(
-            child: Text('S'),
-            value: 'S',
-          ),
-          DropdownMenuItem(
-            child: Text('M'),
-            value: 'M',
-          ),
-          DropdownMenuItem(
-            child: Text('L'),
-            value: 'L',
-          ),
-        ],
-        value: model.currentSize,
-        onChanged: (value) {
-          model.setSizePropertyValue(value.toString());
-        },
-      ))
+          child: ChangeNotifierProvider<DraggableModel>.value(
+              value: model,
+              child: Consumer<DraggableModel>(
+                builder: (context, provider, widget) => DropdownButton(
+                  items: provider.sizeList
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem(value: value, child: Text(value));
+                  }).toList(),
+                  value: provider.currentSize,
+                  onChanged: (value) {
+                    provider.setSizePropertyValue(value.toString());
+                  },
+                ),
+              )))
     ]);
+  }
+}
+
+class SizeRadioList extends StatelessWidget {
+  const SizeRadioList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = ModalRoute.of(context)!.settings.arguments as DraggableModel;
+
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(
+            width: 100,
+            child: Text('Size'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: model.sizeList.length,
+              itemBuilder: (context, index) => RadioListTile(
+                title: Text(model.sizeList[index]),
+                value: model.sizeList[index],
+                groupValue: model.currentSize,
+                onChanged: (value) =>
+                    model.setSizePropertyValue(value.toString()),
+              ),
+            ),
+          )
+        ]);
   }
 }
