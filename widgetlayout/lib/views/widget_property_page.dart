@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widgetlayout/models/draggable_model.dart';
-import 'menu_drawer.dart';
 
 class WidgetPropertyPage extends StatelessWidget {
   const WidgetPropertyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const String pageTitle = 'Property';
     final model = ModalRoute.of(context)!.settings.arguments as DraggableModel;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(pageTitle),
-      ),
-      drawer: const MenuDrawer(
-        selectedMenu: pageTitle,
+        title: const Text('Property'),
       ),
       body: Container(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             DoublePropertyTile(
-                propertyName: 'X', propertyValue: model.position.dx),
+                propertyName: 'X', propertyValue: model.positionX),
             DoublePropertyTile(
-                propertyName: 'Y', propertyValue: model.position.dy),
+                propertyName: 'Y', propertyValue: model.positionY),
             const SizeDropDown()
           ],
         ),

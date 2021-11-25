@@ -14,19 +14,21 @@ class DraggableWidget extends StatelessWidget {
 
     return Consumer<DraggableModel>(
         builder: (context, model, child) => Positioned(
-            left: model.position.dx,
-            top: model.position.dy,
+            left: model.positionX,
+            top: model.positionY,
             width: model.width,
             height: model.height,
             child: GestureDetector(
                 behavior: HitTestBehavior.deferToChild,
                 onPanUpdate: (DragUpdateDetails details) {
                   if (model.isEditable == false) return;
-                  model.position += details.delta;
+                  model.positionX += details.delta.dx;
+                  model.positionY += details.delta.dy;
                 },
                 onLongPressStart: (LongPressStartDetails details) {
                   // print("start=${details.globalPosition}");
-                  _longPressStartPosition = model.position;
+                  _longPressStartPosition =
+                      Offset(model.positionX, model.positionY);
                 },
                 onLongPress: () {
                   HapticFeedback.vibrate();
@@ -35,8 +37,10 @@ class DraggableWidget extends StatelessWidget {
                 onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
                   // print("${details.offsetFromOrigin}");
                   if (model.isEditable == false) return;
-                  model.position =
-                      _longPressStartPosition + details.offsetFromOrigin;
+                  model.positionX =
+                      _longPressStartPosition.dx + details.offsetFromOrigin.dx;
+                  model.positionY =
+                      _longPressStartPosition.dy + details.offsetFromOrigin.dy;
                 },
                 child: Visibility(
                   visible: model.isVisible,
@@ -56,11 +60,11 @@ class DraggableWidget extends StatelessWidget {
                                       itemBuilder: (BuildContext context) {
                                     return [
                                       PopupMenuItem(
-                                        child: const Text("delete"),
+                                        child: const Text("Delete"),
                                         onTap: () => {model.isVisible = false},
                                       ),
                                       PopupMenuItem(
-                                        child: const Text("property"),
+                                        child: const Text("Property"),
                                         onTap: () => {
                                           Navigator.pushNamed(
                                               context, 'Property',

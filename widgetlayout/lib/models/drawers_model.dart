@@ -8,7 +8,7 @@ class DrawerMenusModel extends ChangeNotifier {
     DrawerModel('Menu', false),
     DrawerModel('Layout', true),
     DrawerModel('Widget List', false),
-    DrawerModel('Preset', false),
+    DrawerModel('Presets', false),
   ];
 
   void changeSelected(String menuName) {

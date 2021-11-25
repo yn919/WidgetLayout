@@ -39,10 +39,13 @@ class MenuItem extends StatelessWidget {
                 title: Text(model.menuName),
                 onTap: () {
                   if (drawers.currentSelectedMenu.menuName == model.menuName) {
-                    return;
+                    Navigator.restorablePushReplacementNamed(
+                        context, model.menuName);
+                  } else {
+                    Navigator.pushNamed(context, model.menuName);
                   }
+
                   drawers.changeSelected(model.menuName);
-                  Navigator.pushNamed(context, model.menuName);
                 },
               ),
             ));

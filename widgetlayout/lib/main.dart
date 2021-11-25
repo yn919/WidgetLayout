@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widgetlayout/models/draggable_manager.dart';
 import 'package:widgetlayout/models/drawers_model.dart';
+import 'package:widgetlayout/models/presets_model.dart';
 import 'package:widgetlayout/views/layout_page.dart';
+import 'package:widgetlayout/views/preset_detail_page.dart';
+import 'package:widgetlayout/views/presets_page.dart';
 import 'package:widgetlayout/views/widget_list_page.dart';
 import 'package:widgetlayout/views/widget_property_page.dart';
 
@@ -23,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<DrawerMenusModel>(
           create: (context) => DrawerMenusModel(),
+        ),
+        ChangeNotifierProvider<PresetsModel>(
+          create: (context) => PresetsModel(),
         )
       ],
       child: MaterialApp(
@@ -34,7 +40,9 @@ class MyApp extends StatelessWidget {
         routes: {
           'Layout': (context) => const LayoutPage(),
           'Widget List': (context) => const WidgetListPage(),
-          'Property': (context) => const WidgetPropertyPage()
+          'Property': (context) => const WidgetPropertyPage(),
+          'Presets': (context) => const PresetsPage(),
+          'Preset Detail': (context) => const PresetDetailPage(),
         },
       ),
     );

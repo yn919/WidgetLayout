@@ -8,10 +8,17 @@ class DraggableModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Offset _position = const Offset(0, 0);
-  Offset get position => _position;
-  set position(Offset value) {
-    _position = value;
+  double _positionX = 0;
+  double get positionX => _positionX;
+  set positionX(double value) {
+    _positionX = value;
+    notifyListeners();
+  }
+
+  double _positionY = 0;
+  double get positionY => _positionY;
+  set positionY(double value) {
+    _positionY = value;
     notifyListeners();
   }
 
@@ -59,10 +66,10 @@ class DraggableModel extends ChangeNotifier {
   void setDoublePropertyValue(String propertyName, double propertyValue) {
     switch (propertyName) {
       case 'X':
-        _position = Offset(propertyValue, _position.dy);
+        _positionX = propertyValue;
         break;
       case 'Y':
-        _position = Offset(_position.dx, propertyValue);
+        _positionY = propertyValue;
         break;
       default:
     }
@@ -94,29 +101,51 @@ class DraggableModel extends ChangeNotifier {
 }
 
 class DraggableJson {
-  String widgetName;
-  Offset position;
-  double width;
-  double height;
-  bool isEditable;
-  bool isVisible;
+  final String widgetName;
+  final double positionX;
+  final double positionY;
+  final double width;
+  final double height;
+  final double baseWidth;
+  final double baseHeight;
+  final String currentSize;
+  final bool isEditable;
+  final bool isVisible;
 
-  DraggableJson(this.widgetName, this.position, this.width, this.height,
-      this.isEditable, this.isVisible);
+  DraggableJson(
+    this.widgetName,
+    this.positionX,
+    this.positionY,
+    this.width,
+    this.height,
+    this.baseWidth,
+    this.baseHeight,
+    this.currentSize,
+    this.isEditable,
+    this.isVisible,
+  );
 
   DraggableJson.fromJson(Map<String, dynamic> json)
       : widgetName = json['widgetName'] as String,
-        position = json['position'] as Offset,
+        positionX = json['positionX'] as double,
+        positionY = json['positionY'] as double,
         width = json['width'] as double,
         height = json['height'] as double,
+        baseWidth = json['baseWidth'] as double,
+        baseHeight = json['baseHeight'] as double,
+        currentSize = json['currentSize'] as String,
         isEditable = json['isEditable'] as bool,
         isVisible = json['isVisible'] as bool;
 
   Map<String, dynamic> toJson() => {
         'widgetName': widgetName,
-        'position': position,
+        'positionX': positionX,
+        'positionY': positionY,
         'width': width,
         'height': height,
+        'baseWidth': baseWidth,
+        'baseHeight': baseHeight,
+        'currentSize': currentSize,
         'isEditable': isEditable,
         'isVisible': isVisible,
       };

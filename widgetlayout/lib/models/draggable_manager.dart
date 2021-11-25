@@ -14,17 +14,39 @@ class DraggableManager extends ChangeNotifier {
   }
 
   String createDraggablesJsonString() {
-    DraggablesJson draggablesJson = DraggablesJson([]);
+    DraggablesJson draggablesJson = DraggablesJson();
     for (var item in _draggables.draggables) {
       draggablesJson.draggables.add(DraggableJson(
-          item.widgetName,
-          item.position,
-          item.width,
-          item.height,
-          item.isEditable,
-          item.isVisible));
+        item.widgetName,
+        item.positionX,
+        item.positionY,
+        item.width,
+        item.height,
+        item.baseWidth,
+        item.baseHeight,
+        item.currentSize,
+        item.isEditable,
+        item.isVisible,
+      ));
     }
 
     return json.encode(draggablesJson);
+  }
+
+  String createDraggableJsonString() {
+    final jsonObj = DraggableJson(
+      _draggables.draggables[0].widgetName,
+      _draggables.draggables[0].positionX,
+      _draggables.draggables[0].positionY,
+      _draggables.draggables[0].width,
+      _draggables.draggables[0].height,
+      _draggables.draggables[0].baseWidth,
+      _draggables.draggables[0].baseHeight,
+      _draggables.draggables[0].currentSize,
+      _draggables.draggables[0].isEditable,
+      _draggables.draggables[0].isVisible,
+    );
+
+    return json.encode(jsonObj);
   }
 }
