@@ -35,14 +35,19 @@ class WidgetListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DraggableModel>(
-        builder: (context, model, widget) => ListTile(
-              leading: Checkbox(
-                value: model.isVisible,
-                onChanged: (isCheck) => model.isVisible = isCheck!,
+        builder: (context, model, widget) => Container(
+              decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.black38))),
+              child: ListTile(
+                leading: Checkbox(
+                  value: model.isVisible,
+                  onChanged: (isCheck) => model.isVisible = isCheck!,
+                ),
+                title: Text(model.widgetName),
+                onTap: () => {
+                  Navigator.pushNamed(context, 'Property', arguments: model)
+                },
               ),
-              title: Text(model.widgetName),
-              onTap: () =>
-                  {Navigator.pushNamed(context, 'Property', arguments: model)},
             ));
   }
 }

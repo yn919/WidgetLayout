@@ -11,10 +11,6 @@ class PresetDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final manager = Provider.of<DraggableManager>(context);
-    final presetsModel = Provider.of<PresetsModel>(context);
-    final model = ModalRoute.of(context)!.settings.arguments as PresetModel;
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('Preset Detail'),
@@ -30,13 +26,12 @@ class PresetDetailPage extends StatelessWidget {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
-                        await onPressedSaveButton(
-                            manager, presetsModel, model, context);
+                        await onPressedSaveButton(context);
                       },
                       child: const Text('Save')),
                   ElevatedButton(
                       onPressed: () async {
-                        await onPressedLoadButton(presetsModel, model, context);
+                        await onPressedLoadButton(context);
                       },
                       child: const Text('Load'))
                 ],
@@ -46,30 +41,42 @@ class PresetDetailPage extends StatelessWidget {
         ));
   }
 
-  Future<void> onPressedSaveButton(
-      DraggableManager manager,
-      PresetsModel presetsModel,
-      PresetModel model,
-      BuildContext context) async {
-    final jsonString = manager.createDraggablesJsonString();
-    await presetsModel.saveFile(jsonString, model.presetName);
+  Future<void> onPressedSaveButton(BuildContext context) async {
+    final manager = Provider.of<DraggableManager>(context, listen: false);
+    final presetsModel = Provider.of<PresetsModel>(context, listen: false);
+    final model = ModalRoute.of(context)!.settings.arguments as PresetModel;
 
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('save complete')));
+    try {
+      final jsonString = manager.createDraggablesJsonString();
+      await presetsModel.saveFile(jsonString, model.presetName);
+
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('save complete')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('save error')));
+    }
   }
 
-  Future<void> onPressedLoadButton(PresetsModel presetsModel, PresetModel model,
-      BuildContext context) async {
-    final jsonString = await presetsModel.loadFile(model.presetName);
-    print(jsonString);
+  Future<void> onPressedLoadButton(BuildContext context) async {
+    final manager = Provider.of<DraggableManager>(context, listen: false);
+    final presetsModel = Provider.of<PresetsModel>(context, listen: false);
+    final model = ModalRoute.of(context)!.settings.arguments as PresetModel;
 
-    if (jsonString != 'error') {
-      final map = json.decode(jsonString) as Map;
+    try {
+      final draggablesJson = await presetsModel.loadFile(model.presetName);
+      final draggablesMap = json.decode(draggablesJson) as Map<String, dynamic>;
+      DraggablesModel newModel = manager.parseDraggablesJson(draggablesMap);
+      manager.draggables = newModel;
+
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('load complete')));
-    } else {
+
+      Navigator.pushNamedAndRemoveUntil(context, 'Layout', (_) => false);
+    } catch (e) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('load error')));

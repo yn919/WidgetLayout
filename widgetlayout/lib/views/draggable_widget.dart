@@ -26,7 +26,6 @@ class DraggableWidget extends StatelessWidget {
                   model.positionY += details.delta.dy;
                 },
                 onLongPressStart: (LongPressStartDetails details) {
-                  // print("start=${details.globalPosition}");
                   _longPressStartPosition =
                       Offset(model.positionX, model.positionY);
                 },
@@ -35,7 +34,6 @@ class DraggableWidget extends StatelessWidget {
                   manager.changeEditMode(!model.isEditable);
                 },
                 onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
-                  // print("${details.offsetFromOrigin}");
                   if (model.isEditable == false) return;
                   model.positionX =
                       _longPressStartPosition.dx + details.offsetFromOrigin.dx;
@@ -57,22 +55,26 @@ class DraggableWidget extends StatelessWidget {
                               Visibility(
                                   visible: model.isEditable,
                                   child: PopupMenuButton(
-                                      itemBuilder: (BuildContext context) {
-                                    return [
-                                      PopupMenuItem(
-                                        child: const Text("Delete"),
-                                        onTap: () => {model.isVisible = false},
-                                      ),
-                                      PopupMenuItem(
-                                        child: const Text("Property"),
-                                        onTap: () => {
+                                      onSelected: (value) {
+                                        if (value == 'Property') {
                                           Navigator.pushNamed(
                                               context, 'Property',
-                                              arguments: model)
-                                        },
-                                      ),
-                                    ];
-                                  })),
+                                              arguments: model);
+                                        }
+                                      },
+                                      itemBuilder: (BuildContext context) => [
+                                            PopupMenuItem(
+                                              child: const Text('Delete'),
+                                              value: 'Delete',
+                                              onTap: () =>
+                                                  {model.isVisible = false},
+                                            ),
+                                            PopupMenuItem(
+                                              child: const Text('Property'),
+                                              value: 'Property',
+                                              onTap: () => {},
+                                            ),
+                                          ])),
                             ],
                           ),
                         )),

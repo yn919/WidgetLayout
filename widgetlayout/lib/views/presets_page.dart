@@ -34,11 +34,16 @@ class PresetListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<PresetModel>(
-        builder: (context, model, widget) => ListTile(
-              title: Text(model.listItemName),
-              onTap: () {
-                Navigator.pushNamed(context, 'Preset Detail', arguments: model);
-              },
+        builder: (context, model, widget) => Container(
+              decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.black38))),
+              child: ListTile(
+                title: Text(model.listItemName),
+                onTap: () {
+                  Navigator.pushNamed(context, 'Preset Detail',
+                      arguments: model);
+                },
+              ),
             ));
   }
 }
